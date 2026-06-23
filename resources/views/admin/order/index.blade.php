@@ -123,7 +123,11 @@ tr:hover{
 
                           <tr>
                             <td>{{ $item->produs->title}}</td>
-                            <td>{{ $item->quantityOrdered}}</td>
+                            <td>
+                                @foreach($order->tickets as $ticket)
+    {{ $ticket->ticket_number }}
+    @endforeach
+                            </td>
                             <td>{{ $order->Total}}</td>
                           </tr>
                           @endforeach

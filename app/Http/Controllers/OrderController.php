@@ -6,75 +6,86 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Produse;
 use App\Models\OrderDetails;
+use App\Models\Ticket;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function index()
-{
-    $orders = Order::with('orderDetails.produs.images')
-    ->where('users_id', auth()->id())
-    ->latest()
-    ->get();
+     public function index()
+    {
+        $orders = Order::with('orderDetails.produs.images', 'tickets')
+            ->where('users_id', auth()->id())
+            ->latest()
+            ->get();
 
-    return view('order.index', compact('orders'));
-}
-public function store(Request $request, $id)
-{
-    $request->validate([
-        'tickets' => 'required|integer|min:1',
-    ]);
-
-    $produs = Produse::findOrFail($id);
-
-    // Verificare sold out
-    if ($produs->tickets_sold >= $produs->tickets) {
-        return back()->with('error', 'Sold Out');
+        return view('order.index', compact('orders'));
     }
 
-    // Verificare bilete disponibile
-    if (
-        $produs->tickets_sold + $request->tickets >
-        $produs->tickets
-    ) {
-        return back()->with(
-            'error',
-            'Nu mai sunt suficiente bilete disponibile.'
-        );
+    public function store(Request $request, $id)
+    {
+        $request->validate([
+            'tickets' => 'required|integer|min:1',
+        ]);
+
+        DB::transaction(function () use ($request, $id) {
+
+            $produs = Produse::lockForUpdate()->findOrFail($id);
+
+            if ($produs->tickets_sold >= $produs->tickets) {
+                abort(400, 'Sold Out');
+            }
+
+            if ($produs->tickets_sold + $request->tickets > $produs->tickets) {
+                abort(400, 'Nu mai sunt suficiente bilete.');
+            }
+
+            $price = $produs->price;
+
+            if ($produs->discount > 0) {
+                $price = $produs->price - ($produs->price * $produs->discount / 100);
+            }
+
+            $order = Order::create([
+                'users_id' => auth()->id(),
+                'orderNumber' => 'ORD-' . time(),
+                'orderDate' => now(),
+                'shippedDate' => now(),
+                'status' => 'confirmed',
+                'Total' => $request->tickets * $price,
+            ]);
+
+            OrderDetails::create([
+                'orders_id' => $order->id,
+                'produses_id' => $produs->id,
+                'quantityOrdered' => $request->tickets,
+            ]);
+
+            $soldTickets = Ticket::where('produses_id', $produs->id)
+                ->pluck('ticket_number')
+                ->toArray();
+
+            $availableTickets = array_values(array_diff(
+                range(1, $produs->tickets),
+                $soldTickets
+            ));
+
+            $randomTickets = collect($availableTickets)
+                ->random($request->tickets);
+
+            foreach ($randomTickets as $ticketNumber) {
+                Ticket::create([
+                    'orders_id' => $order->id,
+                    'produses_id' => $produs->id,
+                    'users_id' => auth()->id(),
+                    'ticket_number' => $ticketNumber,
+                ]);
+            }
+
+            $produs->tickets_sold += $request->tickets;
+            $produs->save();
+        });
+
+        return redirect('/order')
+            ->with('success', 'Comanda a fost plasată cu succes!');
     }
-
-    // Calcul preț cu discount
-    $price = $produs->price;
-
-    if ($produs->discount > 0) {
-        $price = $produs->price -
-            ($produs->price * $produs->discount / 100);
-    }
-
-    // Creare comandă
-    $order = Order::create([
-        'users_id'     => auth()->id(),
-        'orderNumber'  => time(),
-        'orderDate'    => now(),
-        'shippedDate'  => now(),
-        'status'       => 'confirmed',
-        'Total'        => $request->tickets * $price,
-    ]);
-
-    // Creare detalii comandă
-    OrderDetails::create([
-        'orders_id'       => $order->id,
-        'produses_id'     => $produs->id,
-        'quantityOrdered' => $request->tickets,
-    ]);
-
-    // Actualizare bilete vândute
-    $produs->tickets_sold += $request->tickets;
-    $produs->save();
-
-    return redirect('/order')
-        ->with(
-            'success',
-            'Comanda a fost plasată cu succes!'
-        );
-}
 }

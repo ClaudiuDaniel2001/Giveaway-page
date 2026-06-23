@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class Order extends Model
         OrderDetails::class,
         'orders_id'
     );
+}
+
+public function tickets()
+{
+    return $this->hasMany(Ticket::class, 'orders_id');
 }
 }

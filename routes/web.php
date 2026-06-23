@@ -104,5 +104,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     [UserOrderController::class, 'store']
 )->middleware('auth')
  ->name('order.store');
+ 
 
 Route::get('/my-order',[OrderController::class, 'index'])->middleware('auth');
+
+Route::view('/terms' , 'terms')->name('terms');
+Route::view('/contact' , 'contact')->name('contact');
+Route::view('/privacy' , 'privacy')->name('privacy');

@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Ticket;
 
 class OrderController extends Controller
 {
     public function index(){
         $orders = Order::with([
             'user',
-            'orderDetails.produs.images'
+            'orderDetails.produs.images',
+            'tickets'
         ])
         ->latest()
         ->get();

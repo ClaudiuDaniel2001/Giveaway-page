@@ -3,13 +3,17 @@
 @section('content')
 <style>
 
-  .categories-page{
+  .container{
+    display: block;
     background:transparent;
-    padding:40px;
+    max-width:1400px;
+    width:90%;
+    margin:20px auto;
 }
 
 .category-row{
     display:flex;
+    justify-content: center;
     margin-bottom:30px;
     border:1px solid rgba(255,0,234,.35);
     border-radius:20px;
@@ -62,7 +66,7 @@
 </style>
 
 
-<div class="categories-page">
+<div class="container">
 
 @foreach($categorii as $categorie)
     <div class="category-row">

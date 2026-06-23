@@ -75,7 +75,7 @@ td img{
     <tr>
         <th>Order</th>
         <th>Imges</th>
-        <th>Starus</th>
+        <th>Tickets</th>
         <th>Total</th>
     </tr>
 @foreach ($orders as $order)
@@ -94,8 +94,11 @@ td img{
 
         @endforeach
     </td>
-
-    <td>{{ $order->status }}</td>
+    <td>
+@foreach($order->tickets as $ticket)
+    {{ $ticket->ticket_number }}
+    @endforeach
+    </td>
     <td>{{ $order->Total }}</td>
 </tr>
     @endforeach
