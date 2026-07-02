@@ -50,7 +50,7 @@ class OrderController extends Controller
                 'orderNumber' => 'ORD-' . time(),
                 'orderDate' => now(),
                 'shippedDate' => now(),
-                'status' => 'confirmed',
+                'status' => 'shipped',
                 'Total' => $request->tickets * $price,
             ]);
 

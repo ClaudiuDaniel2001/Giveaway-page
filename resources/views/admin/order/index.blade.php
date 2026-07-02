@@ -95,7 +95,7 @@ tr:hover{
               <p><strong>User:</strong> {{ $order->user->name }}</p>
               <p><strong>Status:</strong> {{ $order->status }}</p>
               <p><strong>Total:</strong> {{ $order->Total}}</p>
-                   @if($order->status === 'confirmed')
+                   @if($order->status === 'shipped')
               <form action="/admin/order/{{ $order->id }}/ship" method="POST">
 
                   @csrf
@@ -125,8 +125,8 @@ tr:hover{
                             <td>{{ $item->produs->title}}</td>
                             <td>
                                 @foreach($order->tickets as $ticket)
-    {{ $ticket->ticket_number }}
-    @endforeach
+                                {{ $ticket->ticket_number }}
+                                @endforeach
                             </td>
                             <td>{{ $order->Total}}</td>
                           </tr>

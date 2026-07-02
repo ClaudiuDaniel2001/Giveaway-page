@@ -6,6 +6,8 @@
 body{
     background:#ffffff;
     color:rgb(0, 0, 0);
+    
+
 }
 h1{
     display: flex;
@@ -99,7 +101,7 @@ td img{
     {{ $ticket->ticket_number }}
     @endforeach
     </td>
-    <td>{{ $order->Total }}</td>
+    <td>£{{ $order->Total }}</td>
 </tr>
     @endforeach
 </table>
