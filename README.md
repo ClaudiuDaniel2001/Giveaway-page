@@ -42,7 +42,7 @@ Giveaway Platform este o aplicație web dezvoltată folosind Laravel, creată pe
 
 ![PanouControl](screenshots/panoucontrol.png)
 
-##Produs
+## Produs
 
 ![Produs](screenshots/produs.png)
 
