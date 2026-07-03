@@ -1,12 +1,12 @@
 # Giveaway Platform
 
-## Descriere
+## Description
 
-Giveaway Platform este o aplicație web dezvoltată folosind Laravel, creată pentru administrarea și organizarea giveaway-urilor.
+Giveaway Platform is a web application developed with Laravel, designed to manage and organize online giveaways. It includes a complete administration panel, user authentication, product and category management, an order system, and a ticket-based giveaway mechanism.
 
-## Tehnologii folosite
+## Technologies Used
 
-- PHP
+- PHP 8
 - Laravel
 - MySQL
 - HTML5
@@ -15,21 +15,21 @@ Giveaway Platform este o aplicație web dezvoltată folosind Laravel, creată pe
 - Bootstrap
 - Git
 
-## Funcționalități
+## Features
 
-- Autentificare utilizatori
-- Înregistrare utilizatori
-- Panou Administrator
-- CRUD Produse
-- CRUD Categorii
-- Gestionare comenzi
-- Upload imagini
-- Sistem de bilete
-- Design Responsive
+- User Authentication
+- User Registration
+- Admin Dashboard
+- Product CRUD
+- Category CRUD
+- Order Management
+- Image Upload
+- Ticket System
+- Responsive Design
 
-## Capturi de ecran
+## Screenshots
 
-## Pagin aprincipala
+## Home Page
 ![Home](screenshots/home.png)
 
 ## Login
@@ -38,11 +38,11 @@ Giveaway Platform este o aplicație web dezvoltată folosind Laravel, creată pe
 ## Register
 ![Register](screenshots/register.png)
 
-## Panou Control
+## Control Panel
 
 ![PanouControl](screenshots/panoucontrol.png)
 
-## Produs
+## Products
 
 ![Produs](screenshots/produs.png)
 
@@ -54,7 +54,7 @@ Giveaway Platform este o aplicație web dezvoltată folosind Laravel, creată pe
 
 ![UserOrders](screenshots/userorder.png)
 
-## Instalare
+## Installation
 
 ```bash
 git clone https://github.com/ClaudiuDaniel2001/Giveaway-page.git
@@ -78,7 +78,7 @@ npm run dev
 php artisan serve
 ```
 
-## Autor
+## Author
 
 Claudiu Alexandroae
 Junior Full Stack Web Developer
